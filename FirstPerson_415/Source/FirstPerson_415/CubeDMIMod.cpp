@@ -60,6 +60,7 @@ void ACubeDMIMod::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 		{
 			dmiMat->SetVectorParameterValue("Color", randColor);
 			dmiMat->SetScalarParameterValue("Darkness", ranNumX);
+			dmiMat->SetScalarParameterValue("Opacity", ranNumX);
 		}
 	}
 }
