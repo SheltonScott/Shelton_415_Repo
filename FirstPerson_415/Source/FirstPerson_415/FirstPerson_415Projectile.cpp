@@ -6,6 +6,8 @@
 #include "Components/SphereComponent.h"
 #include "Components/DecalComponent.h"
 #include "Kismet//GameplayStatics.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 
 AFirstPerson_415Projectile::AFirstPerson_415Projectile() 
 {
@@ -68,6 +70,16 @@ void AFirstPerson_415Projectile::OnHit(UPrimitiveComponent* HitComp, AActor* Oth
 	// If the ball has hit something in the scene
 	if (OtherActor != nullptr)
 	{
+		// If colorP is not null
+		if (colorP)
+		{
+			// Initialize particle component using niagara, set variable to particle component, and destroy the ball
+			UNiagaraComponent* particleComp = UNiagaraFunctionLibrary::SpawnSystemAttached(colorP, HitComp, NAME_None, FVector(-20.f, 0.f, 0.f), FRotator(0.f), EAttachLocation::KeepRelativeOffset, true);
+			particleComp->SetNiagaraVariableLinearColor(FString("RandColor"), randColor);
+			ballMesh->DestroyComponent();
+			CollisionComp->BodyInstance.SetCollisionProfileName("NoCollision");
+		}
+		
 		// Initialize random number variable for frame randomization
 		float frameNum = UKismetMathLibrary::RandomFloatInRange(0.f, 3.f);
 
