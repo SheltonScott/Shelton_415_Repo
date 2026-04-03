@@ -8,6 +8,7 @@
 #include "Kismet//GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
+#include "PerlinProcTerrain.h"
 
 AFirstPerson_415Projectile::AFirstPerson_415Projectile() 
 {
@@ -90,5 +91,13 @@ void AFirstPerson_415Projectile::OnHit(UPrimitiveComponent* HitComp, AActor* Oth
 		// Assign our random color and frame number to the decal material parameters
 		MatInstance->SetVectorParameterValue("Color", randColor);
 		MatInstance->SetScalarParameterValue("Frame", frameNum);
+
+		// If procedural terrain is set
+		// Alter the procedural mesh with the projectile
+		APerlinProcTerrain* procTerrain = Cast<APerlinProcTerrain>(OtherActor);
+		if (procTerrain)
+		{
+			procTerrain->AlterMesh(Hit.ImpactPoint);
+		}
 	}
 }
